@@ -28,3 +28,10 @@ fi
 
 # Created by `pipx` on 2025-02-05 18:35:33
 export PATH="$PATH:/home/jasonhk/.local/bin"
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+
+export SSH_AUTH_SOCK="$HOME/snap/bitwarden/current/.bitwarden-ssh-agent.sock"
