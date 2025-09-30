@@ -1,5 +1,5 @@
 packages:
-  linux:
+  ubuntu:
     pipx:
     - yt-dlp
   windows:
@@ -7,4 +7,11 @@ packages:
     - yt-dlp
   android:
     pkg:
-    - git
+    - perl-rename
+    pip:
+    - yt-dlp
+    - gallery_dl
+  synology:
+    brew:
+    - yt-dlp
+    - rename
