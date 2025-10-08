@@ -1,17 +1,24 @@
 packages:
   ubuntu:
+    apt:
+    - fastfetch
     pipx:
     - yt-dlp
   windows:
     winget:
+    - fastfetch
     - yt-dlp
   android:
     pkg:
+    - fastfetch
     - perl-rename
     pip:
-    - yt-dlp
     - gallery_dl
+    - yt-dlp
   synology:
     brew:
-    - yt-dlp
+    - fastfetch
+    - nano
     - rename
+    - screen
+    - yt-dlp
