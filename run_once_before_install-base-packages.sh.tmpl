@@ -3,7 +3,7 @@
 
 echo "Installing common base packages..."
 {{   if eq .chezmoi.osRelease.id "ubuntu" -}}
-sudo apt install zsh
+sudo apt install -y zsh
 {{   end -}}
 echo "Installed common base packages."
 echo
@@ -11,12 +11,20 @@ echo
 {{   if not .isServer -}}
 echo "Installing client base packages..."
 {{     if eq .chezmoi.osRelease.id "ubuntu" -}}
-sudo apt install pipx
+sudo apt install -y pipx
 {{     end -}}
 echo "Installed client base packages."
 {{   else -}}
 echo "Skipped installing client base packages."
 {{   end -}}
+echo
+
+{{ if eq .chezmoi.os "android" -}}
+#!/bin/sh
+
+echo "Installing base packages..."
+pkg install -y python python-pip zsh
+echo "Installed base packages."
 echo
 
 {{ end -}}
