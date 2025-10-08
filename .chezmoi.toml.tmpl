@@ -1,4 +1,4 @@
-{{ $isServer := promptBoolOnce . "isServer" "Is this machine a server" }}
+{{ $isServer := promptBoolOnce . "isServer" "Is this machine a server" -}}
 
 [data]
 isServer = {{ $isServer }}

@@ -1,0 +1,22 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+echo "Installing common base packages..."
+{{   if eq .chezmoi.osRelease.id "ubuntu" -}}
+sudo apt install zsh
+{{   end -}}
+echo "Installed common base packages."
+echo
+
+{{   if not .isServer -}}
+echo "Installing client base packages..."
+{{     if eq .chezmoi.osRelease.id "ubuntu" -}}
+sudo apt install pipx
+{{     end -}}
+echo "Installed client base packages."
+{{   else -}}
+echo "Skipped installing client base packages."
+{{   end -}}
+echo
+
+{{ end -}}
