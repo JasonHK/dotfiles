@@ -19,7 +19,7 @@ echo "Skipped installing client base packages."
 {{   end -}}
 echo
 
-{{ if eq .chezmoi.os "android" -}}
+{{ else if eq .chezmoi.os "android" -}}
 #!/bin/sh
 
 echo "Installing base packages..."
