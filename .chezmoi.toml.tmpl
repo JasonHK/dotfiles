@@ -13,6 +13,12 @@
 {{   $isServer = promptBoolOnce . "isServer" "Is this machine a server" false -}}
 {{ end -}}
 
+{{ if $isSynology -}}
+{{   $scriptTempDir := print .chezmoi.destDir "/.tmp" -}}
+{{   exec "mkdir" "-p" $scriptTempDir -}}
+scriptTempDir = {{ .chezmoi.destDir | quote }}
+{{ end }}
+
 [data]
 isServer = {{ $isServer }}
 isSynology = {{ $isSynology }}
