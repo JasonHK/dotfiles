@@ -1,3 +1,6 @@
+{{ $name := promptStringOnce . "name" "What is your name" -}}
+{{ $email := promptStringOnce . "email" "What is your email address" -}}
+
 {{ $isSynology := false -}}
 {{ if stat "/etc/VERSION" -}}
 {{   $osName := (include "/etc/VERSION" | regexFind "os_name=.*" | trimPrefix "os_name=\"" | trimSuffix "\"") -}}
@@ -20,6 +23,9 @@ scriptTempDir = {{ .chezmoi.destDir | quote }}
 {{ end }}
 
 [data]
+name = {{ $name | quote }}
+email = {{ $email | quote }}
+
 isServer = {{ $isServer }}
 isSynology = {{ $isSynology }}
 
