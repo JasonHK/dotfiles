@@ -1,0 +1,8 @@
+*.toml.tmpl linguist-language=TOML
+
+*.sh.tmpl linguist-language=Shell
+*.zsh.tmpl linguist-language=Shell
+dot_profile linguist-language=Shell
+dot_zprofile linguist-language=Shell
+dot_bashrc linguist-language=Shell
+dot_zshrc linguist-language=Shell
