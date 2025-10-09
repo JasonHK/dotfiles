@@ -2,7 +2,7 @@
 {{ if stat "/etc/VERSION" -}}
 {{   $osName := (include "/etc/VERSION" | regexFind "os_name=.*" | trimPrefix "os_name=\"" | trimSuffix "\"") -}}
 {{   if eq $osName "DSM" -}}
-{{     $isSynology := true -}}
+{{     $isSynology = true -}}
 {{   end -}}
 {{ end -}}
 

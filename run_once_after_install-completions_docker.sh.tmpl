@@ -2,7 +2,7 @@
 #!/bin/sh
 
 {{   if lookPath "docker" -}}
-echo "Installing shell completion for Docker v{{ output "docker" "version" "--format='{{ .Client.Version }}'" | trim | trimAll "'" }}..."
+echo "Installing shell completion for Docker v{{ output "sh" ".docker-version.sh" | trim }}..."
 docker completion zsh > "{{ .completions.zsh }}/_docker"
 {{   else -}}
 rm -f "{{ .completions.zsh }}/_docker"
