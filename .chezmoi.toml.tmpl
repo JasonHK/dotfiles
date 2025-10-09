@@ -1,10 +1,16 @@
-{{ $isServer := promptBoolOnce . "isServer" "Is this machine a server" false -}}
 {{ $isSynology := false -}}
 {{ if stat "/etc/VERSION" -}}
-{{   $osName := include "/etc/VERSION" | regexFind "os_name=.*" | trimPrefix "os_name=\"" | trimSuffix "\"" -}}
+{{   $osName := (include "/etc/VERSION" | regexFind "os_name=.*" | trimPrefix "os_name=\"" | trimSuffix "\"") -}}
 {{   if eq $osName "DSM" -}}
 {{     $isSynology := true -}}
 {{   end -}}
+{{ end -}}
+
+{{ $isServer := false -}}
+{{ if $isSynology -}}
+{{   $isServer = true -}}
+{{ else -}}
+{{   $isServer = promptBoolOnce . "isServer" "Is this machine a server" false -}}
 {{ end -}}
 
 [data]
