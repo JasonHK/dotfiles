@@ -1,4 +1,4 @@
-*.toml.tmpl linguist-language=TOML
+*.toml.tmpl linguist-language=TOML linguist-detectable
 
 *.sh.tmpl linguist-language=Shell
 *.zsh.tmpl linguist-language=Shell
