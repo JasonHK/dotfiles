@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+{{   if lookPath "docker" -}}
+echo "Installing shell completion for Docker v{{ output "docker" "version" "--format='{{ .Client.Version }}'" | trim | trimAll "'" }}..."
+docker completion zsh > "{{ .completions.zsh }}/_docker"
+{{   else -}}
+rm -f "{{ .completions.zsh }}/_docker"
+{{   end -}}
+
+{{ end -}}

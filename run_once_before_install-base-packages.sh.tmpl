@@ -2,7 +2,9 @@
 #!/bin/sh
 
 echo "Installing common base packages..."
-{{   if eq .chezmoi.osRelease.id "ubuntu" -}}
+{{   if .isSynology }}
+
+{{   else if eq .chezmoi.osRelease.id "ubuntu" -}}
 sudo apt install -y zsh
 {{   end -}}
 echo "Installed common base packages."

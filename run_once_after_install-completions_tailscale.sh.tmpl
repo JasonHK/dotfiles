@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+{{   if lookPath "tailscale" -}}
+echo "Installing shell completion for Tailscale v{{ output "tailscale" "version" | splitList "\n" | first | trim }}..."
+tailscale completion zsh > "{{ .completions.zsh }}/_tailscale"
+{{   else -}}
+rm -f "{{ .completions.zsh }}/_tailscale"
+{{   end -}}
+
+{{ end -}}
