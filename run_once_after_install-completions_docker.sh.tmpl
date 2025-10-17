@@ -2,8 +2,7 @@
 #!/bin/sh
 
 {{   if lookPath "docker" -}}
-{{     $script := print .chezmoi.sourceDir "/.docker-version.sh" -}}
-echo "Installing shell completion for Docker v{{ output "sh" $script | trim }}..."
+echo "Installing shell completion for Docker v{{ output "sh" "-c" "docker version --format='{{ .Client.Version }}' 2>&- || true" | trim }}..."
 docker completion zsh > "{{ .completions.zsh }}/_docker"
 {{   else -}}
 rm -f "{{ .completions.zsh }}/_docker"
