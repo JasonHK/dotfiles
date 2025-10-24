@@ -4,8 +4,7 @@
 {{   if lookPath "hugo" -}}
 {{     $messages := (output "hugo" "version" | splitList " ") -}}
 echo "Installing shell completion for Hugo {{ index $messages 1 | trim }}..."
-HUGO_COMPLETION=$(hugo completion zsh)
-printf "%s\n" "$HUGO_COMPLETION" > "{{ .completions.zsh }}/_hugo"
+printf "%s\n" "$(hugo completion zsh)" > "{{ .completions.zsh }}/_hugo"
 {{   else -}}
 rm -f "{{ .completions.zsh }}/_hugo"
 {{   end -}}
