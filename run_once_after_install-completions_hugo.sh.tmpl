@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+{{   if lookPath "hugo" -}}
+{{     $messages := (output "hugo" "version" | splitList " ") -}}
+echo "Installing shell completion for Hugo {{ index $messages 1 | trim }}..."
+hugo completion zsh > "{{ .completions.zsh }}/_hugo"
+{{   else -}}
+rm -f "{{ .completions.zsh }}/_hugo"
+{{   end -}}
+
+{{ end -}}
