@@ -30,7 +30,9 @@
 
 {{ if $isSynology -}}
 {{   $scriptTempDir := print .chezmoi.destDir "/.tmp" -}}
-{{   exec "mkdir" "-p" $scriptTempDir -}}
+{{   if not exec "mkdir" "-p" $scriptTempDir -}}
+{{     fail "Failed to create temp directory" -}}
+{{   end -}}
 scriptTempDir = {{ $scriptTempDir | quote }}
 {{ end -}}
 
