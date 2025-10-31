@@ -31,8 +31,13 @@
 {{ if $isSynology -}}
 {{   $scriptTempDir := print .chezmoi.destDir "/.tmp" -}}
 {{   exec "mkdir" "-p" $scriptTempDir -}}
-scriptTempDir = {{ .chezmoi.destDir | quote }}
-{{ end }}
+scriptTempDir = {{ $scriptTempDir | quote }}
+{{ end -}}
+
+{{ if $isSynology -}}
+[diff]
+pager = {{ if lookPath "less" }}"less"{{ else }}""{{ end }}
+{{ end -}}
 
 [data]
 name = {{ $name | quote }}
