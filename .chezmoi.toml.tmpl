@@ -29,11 +29,11 @@
 {{ end -}}
 
 {{ if $isSynology -}}
-{{   $scriptTempDir := print .chezmoi.destDir "/.tmp" -}}
-{{   if not (exec "mkdir" "-p" $scriptTempDir) -}}
+{{   $tempDir := print .chezmoi.destDir "/.tmp" -}}
+{{   if not (exec "mkdir" "-p" $tempDir) -}}
 {{     fail "Failed to create temp directory" -}}
 {{   end -}}
-scriptTempDir = {{ $scriptTempDir | quote }}
+tempDir = {{ $tempDir | quote }}
 {{ end -}}
 
 {{ if $isSynology -}}
