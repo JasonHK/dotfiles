@@ -2,7 +2,7 @@
 #!/bin/sh
 
 {{   if lookPath "yt-dlp" -}}
-{{     $version := (output "yt-dlp" "--version" | trim) -}}
+{{     $version := output "yt-dlp" "--version" | trim -}}
 echo "Installing shell completion for yt-dlp v{{ $version }}..." 
 TEMP_DIR=$(mktemp -d)
 curl -fS#L -o $TEMP_DIR/yt-dlp.tar.gz {{ gitHubReleaseAssetURL "yt-dlp/yt-dlp" $version "yt-dlp.tar.gz" | quote }}
