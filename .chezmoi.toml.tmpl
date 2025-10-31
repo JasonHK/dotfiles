@@ -1,19 +1,31 @@
+{{ $SERVER_VENDORS := list "DigitalOcean" "Linode" "Synology Inc." -}}
+{{ $MACHINE_TYPES := list "workstation" "server" -}}
+
 {{ $name := promptStringOnce . "name" "What is your name" -}}
 {{ $email := promptStringOnce . "email" "What is your email address" -}}
 
-{{ $isSynology := false -}}
-{{ if stat "/etc/VERSION" -}}
-{{   $osName := (include "/etc/VERSION" | regexFind "os_name=.*" | trimPrefix "os_name=\"" | trimSuffix "\"") -}}
-{{   if eq $osName "DSM" -}}
-{{     $isSynology = true -}}
-{{   end -}}
+{{ $machineType := "" -}}
+{{ if and (eq .chezmoi.os "linux") (has (include "/sys/devices/virtual/dmi/id/sys_vendor" | trim) $SERVER_VENDORS) -}}
+{{   $machineType = "server" -}}
+{{ else -}}
+{{   $machineType = promptChoiceOnce . "machineType" "What type of machine is this" $MACHINE_TYPES "server" -}}
 {{ end -}}
 
-{{ $isServer := false -}}
-{{ if $isSynology -}}
-{{   $isServer = true -}}
-{{ else -}}
-{{   $isServer = promptBoolOnce . "isServer" "Is this machine a server" false -}}
+{{ $isSynology := and (eq .chezmoi.os "linux") (eq (include "/sys/devices/virtual/dmi/id/sys_vendor" | trim) "Synology Inc.") -}}
+
+{{ $chassisType := "desktop" -}}
+{{ if eq .chezmoi.os "darwin" -}}
+{{   if contains "MacBook" (output "system_profiler" "SPHardwareDataType") -}}
+{{     $chassisType = "laptop" -}}
+{{   else -}}
+{{     $chassisType = "desktop" -}}
+{{   end -}}
+{{ else if and (eq .chezmoi.os "linux") $isSynology -}}
+{{   $chassisType = "server" -}}
+{{ else if eq .chezmoi.os "linux" -}}
+{{   $chassisType = (output "hostnamectl" "--json=short" | mustFromJson).Chassis -}}
+{{ else if eq .chezmoi.os "windows" -}}
+{{   $chassisType = (output "powershell.exe" "-NoProfile" "-NonInteractive" "-Command" "if ((Get-CimInstance -Class Win32_Battery | Measure-Object).Count -gt 0) { Write-Output 'laptop' } else { Write-Output 'desktop' }") | trim -}}
 {{ end -}}
 
 {{ if $isSynology -}}
@@ -26,7 +38,10 @@ scriptTempDir = {{ .chezmoi.destDir | quote }}
 name = {{ $name | quote }}
 email = {{ $email | quote }}
 
-isServer = {{ $isServer }}
+machineType = {{ $machineType | quote }}
+chassisType = {{ $chassisType | quote }}
+
+isServer = {{ eq $machineType "server" }}
 isSynology = {{ $isSynology }}
 
 [data.completions]
