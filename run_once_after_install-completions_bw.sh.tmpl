@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+{{   if lookPath "bw" -}}
+echo "Installing shell completion for Bitwarden CLI v{{ output "bw" "--version" | trim }}..."
+printf "%s\n" "$(bw completion --shell zsh)" > "{{ .completions.zsh }}/_bw"
+{{   else -}}
+rm -f "{{ .completions.zsh }}/_bw"
+{{   end -}}
+
+{{ end -}}
