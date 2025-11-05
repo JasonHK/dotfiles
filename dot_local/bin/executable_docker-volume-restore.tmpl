@@ -1,3 +1,4 @@
+{{ if lookPath "docker" -}}
 #!/bin/bash
 set -euo pipefail
 
@@ -30,3 +31,4 @@ elif ! printf '%s\n' "$STRIP_COMPONENTS" | grep -Eq '^[0-9]+$' || [ "$STRIP_COMP
 fi
 
 docker run --rm --volume "$BACKUP_FILE:$BACKUP_MOUNT:ro" --volume "$VOLUME_NAME:$MOUNT_PATH" busybox:stable tar --numeric-owner -xzvf "$BACKUP_MOUNT" --strip-components "$STRIP_COMPONENTS" -C "$MOUNT_PATH"
+{{ end -}}
