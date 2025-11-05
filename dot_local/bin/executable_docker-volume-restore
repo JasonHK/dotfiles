@@ -1,0 +1,32 @@
+#!/bin/bash
+set -euo pipefail
+
+count_components()
+{
+    echo "$1" | tr -s '/' '\n' | sed '/^$/d' | wc -l
+}
+
+if [ "$#" -ne 3 ] && [ "$#" -ne 4 ]; then
+    >&2 echo "Usage: $(basename $0) BACKUP_FILE VOLUME_NAME MOUNT_PATH [STRIP_COMPONENTS]"
+    exit 1
+fi
+
+BACKUP_FILE="$(realpath -m "$1")"
+VOLUME_NAME="$2"
+MOUNT_PATH="$(realpath -m "/$3")"
+STRIP_COMPONENTS="${4:-$(count_components "$MOUNT_PATH")}"
+
+BACKUP_MOUNT="/tmp/$(basename $BACKUP_FILE)"
+
+if [ ! -f "$BACKUP_FILE" ]; then
+    >&2 echo "Error: \"$BACKUP_FILE\" is missing or not a file"
+    exit 2
+elif ! docker volume inspect "$VOLUME_NAME" >/dev/null 2>&1; then
+    >&2 echo "Error: Volume \"$VOLUME_NAME\" does not exist"
+    exit 2
+elif ! printf '%s\n' "$STRIP_COMPONENTS" | grep -Eq '^[0-9]+$' || [ "$STRIP_COMPONENTS" -lt 0 ]; then
+    >&2 echo "Error: STRIP_COMPONENTS must be a non-negative integer"
+    exit 2
+fi
+
+docker run --rm --volume "$BACKUP_FILE:$BACKUP_MOUNT:ro" --volume "$VOLUME_NAME:$MOUNT_PATH" busybox:stable tar --numeric-owner -xzvf "$BACKUP_MOUNT" --strip-components "$STRIP_COMPONENTS" -C "$MOUNT_PATH"

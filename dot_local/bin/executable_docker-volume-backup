@@ -1,0 +1,23 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ "$#" -ne 2 ] && [ "$#" -ne 3 ]; then
+    >&2 echo "Usage: $(basename $0) VOLUME_NAME MOUNT_PATH [BACKUP_FILE]"
+    exit 1
+fi
+
+VOLUME_NAME="$1"
+MOUNT_PATH="$(realpath -m "/$2")"
+BACKUP_FILE="$(basename "${3:-$VOLUME_NAME.tar.gz}")"
+
+BACKUPS_PATH="$PWD/volumes"
+
+if ! docker volume inspect "$VOLUME_NAME" >/dev/null 2>&1; then
+    >&2 echo "Error: Volume \"$VOLUME_NAME\" does not exist"
+    exit 2
+fi
+
+mkdir -p "$BACKUPS_PATH"
+
+echo "Backing up volume \"$VOLUME_NAME\" (mount: \"$MOUNT_PATH\") to \"$BACKUP_FILE\"..."
+docker run --rm --volume "$VOLUME_NAME:$MOUNT_PATH:ro" --volume "$BACKUPS_PATH:/tmp/volumes" busybox:stable tar -czvf "/tmp/volumes/$BACKUP_FILE" "$MOUNT_PATH"
