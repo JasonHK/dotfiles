@@ -30,5 +30,6 @@ elif ! printf '%s\n' "$STRIP_COMPONENTS" | grep -Eq '^[0-9]+$' || [ "$STRIP_COMP
     exit 2
 fi
 
+echo "Restoring volume \"$VOLUME_NAME\" (mount: \"$MOUNT_PATH\") from \"$(basename $BACKUP_FILE)\"..."
 docker run --rm --volume "$BACKUP_FILE:$BACKUP_MOUNT:ro" --volume "$VOLUME_NAME:$MOUNT_PATH" busybox:stable tar --numeric-owner -xzvf "$BACKUP_MOUNT" --strip-components "$STRIP_COMPONENTS" -C "$MOUNT_PATH"
 {{ end -}}
