@@ -2,4 +2,4 @@ emulate sh
 . ~/.profile
 emulate zsh
 
-HOSTNAME="$(hostname)"
+export HOSTNAME="$(hostname)"
