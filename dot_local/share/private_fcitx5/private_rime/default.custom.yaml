@@ -1,0 +1,12 @@
+patch:
+  schema_list:
+    - schema: cangjie5
+  ascii_composer/good_old_caps_lock: true
+  ascii_composer/switch_key:
+    Caps_Lock: noop
+    Shift_L: commit_code
+    Shift_R: noop
+    Control_L: noop
+    Control_R: noop
+  key_binder/bindings/+:
+    - { accept: Shift+space, toggle: full_shape, when: always }
